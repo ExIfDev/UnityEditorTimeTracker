@@ -1,5 +1,5 @@
 //Written by Aexadev on 16/08/2024
-//ver 1.0
+//ver 2.0
 using UnityEditor;
 using UnityEngine;
 using System;
@@ -7,10 +7,11 @@ using System;
 [InitializeOnLoad]
 public class ProjectTimeTracker
 {
-    private static readonly string TotalTimeKey = "ProjectTotalTime";
-    private static readonly string LastTrackedDateKey = "ProjectLastTrackedDate";
-    private static readonly string TodayTimeKey = "ProjectTodayTime";
-    
+    public static readonly string ProjectKeyPrefix = Application.productName + "_";
+    private static readonly string TotalTimeKey = ProjectKeyPrefix + "ProjectTotalTime";
+    private static readonly string LastTrackedDateKey = ProjectKeyPrefix + "ProjectLastTrackedDate";
+    private static readonly string TodayTimeKey = ProjectKeyPrefix + "ProjectTodayTime";
+
     private static DateTime startTime;
     private static double totalTime;
     private static double todayTime;
@@ -63,7 +64,7 @@ public class ProjectTimeTracker
 
             if (DateTime.Now.Date != DateTime.Parse(EditorPrefs.GetString(LastTrackedDateKey, DateTime.Now.ToString("yyyy-MM-dd"))).Date)
             {
-                todayTime = 0; 
+                todayTime = 0;
                 EditorPrefs.SetString(LastTrackedDateKey, DateTime.Now.ToString("yyyy-MM-dd"));
             }
 
@@ -87,7 +88,6 @@ public class ProjectTimeTracker
         style.normal.textColor = Color.white;
         style.fontSize = 14;
 
-        
         switch (currentPreset)
         {
             case PositionPreset.TopLeft:
@@ -121,7 +121,7 @@ public class ProjectTimeTracker
     {
         EditorPrefs.SetFloat(TotalTimeKey, (float)totalTime);
         EditorPrefs.SetFloat(TodayTimeKey, (float)todayTime);
-        EditorPrefs.SetInt("TimeTrackerPositionPreset", (int)currentPreset);
+        EditorPrefs.SetInt(ProjectKeyPrefix + "TimeTrackerPositionPreset", (int)currentPreset);
         EditorPrefs.SetString(LastTrackedDateKey, DateTime.Now.ToString("yyyy-MM-dd"));
     }
 
@@ -145,13 +145,13 @@ public class ProjectTimeTracker
             todayTime = 0.0;
         }
 
-        if (EditorPrefs.HasKey("TimeTrackerPositionPreset"))
+        if (EditorPrefs.HasKey(ProjectKeyPrefix + "TimeTrackerPositionPreset"))
         {
-            currentPreset = (PositionPreset)EditorPrefs.GetInt("TimeTrackerPositionPreset");
+            currentPreset = (PositionPreset)EditorPrefs.GetInt(ProjectKeyPrefix + "TimeTrackerPositionPreset");
         }
 
-        forceRedrawSceneView = EditorPrefs.GetBool("TimeTrackerForceRedrawSceneView", false);
-        showTotalTimeInSceneView = EditorPrefs.GetBool("TimeTrackerShowTotalTimeInSceneView", true);
+        forceRedrawSceneView = EditorPrefs.GetBool(ProjectKeyPrefix + "TimeTrackerForceRedrawSceneView", false);
+        showTotalTimeInSceneView = EditorPrefs.GetBool(ProjectKeyPrefix + "TimeTrackerShowTotalTimeInSceneView", true);
     }
 
     private static void OnPlayModeStateChanged(PlayModeStateChange state)
@@ -164,7 +164,7 @@ public class ProjectTimeTracker
         else if (state == PlayModeStateChange.ExitingEditMode || state == PlayModeStateChange.ExitingPlayMode)
         {
             isEditorFocused = false;
-            UpdateTime(); 
+            UpdateTime();
         }
     }
 
@@ -187,13 +187,13 @@ public class ProjectTimeTracker
     public static void SetPositionPreset(PositionPreset preset)
     {
         currentPreset = preset;
-        EditorPrefs.SetInt("TimeTrackerPositionPreset", (int)preset);
+        EditorPrefs.SetInt(ProjectKeyPrefix + "TimeTrackerPositionPreset", (int)preset);
     }
 
     public static void SetForceRedrawSceneView(bool value)
     {
         forceRedrawSceneView = value;
-        EditorPrefs.SetBool("TimeTrackerForceRedrawSceneView", value);
+        EditorPrefs.SetBool(ProjectKeyPrefix + "TimeTrackerForceRedrawSceneView", value);
 
         if (forceRedrawSceneView)
         {
@@ -208,7 +208,7 @@ public class ProjectTimeTracker
     public static void SetShowTotalTimeInSceneView(bool value)
     {
         showTotalTimeInSceneView = value;
-        EditorPrefs.SetBool("TimeTrackerShowTotalTimeInSceneView", value);
+        EditorPrefs.SetBool(ProjectKeyPrefix + "TimeTrackerShowTotalTimeInSceneView", value);
     }
 
     private static void ForceRedrawSceneView()
@@ -238,9 +238,9 @@ public class TimeTrackerOptionsWindow : EditorWindow
     void OnEnable()
     {
         selectedPreset = ProjectTimeTracker.PositionPreset.BottomLeft;
-        forceRedrawSceneView = EditorPrefs.GetBool("TimeTrackerForceRedrawSceneView", false);
-        showTotalTimeInSceneView = EditorPrefs.GetBool("TimeTrackerShowTotalTimeInSceneView", true);
-        EditorApplication.update += OnEditorUpdate; 
+        forceRedrawSceneView = EditorPrefs.GetBool(ProjectTimeTracker.ProjectKeyPrefix + "TimeTrackerForceRedrawSceneView", false);
+        showTotalTimeInSceneView = EditorPrefs.GetBool(ProjectTimeTracker.ProjectKeyPrefix + "TimeTrackerShowTotalTimeInSceneView", true);
+        EditorApplication.update += OnEditorUpdate;
     }
 
     void OnDisable()
@@ -250,7 +250,7 @@ public class TimeTrackerOptionsWindow : EditorWindow
 
     void OnEditorUpdate()
     {
-        Repaint(); 
+        Repaint();
     }
 
     void OnGUI()
@@ -308,6 +308,9 @@ public class TimeTrackerOptionsWindow : EditorWindow
 
         GUILayout.FlexibleSpace();
 
-        GUILayout.Label("© 2024 Aexadev ver 1.0", EditorStyles.centeredGreyMiniLabel);
+        GUILayout.Label("© 2024 Aexadev ver 2.0", EditorStyles.centeredGreyMiniLabel);
     }
 }
+
+
+
