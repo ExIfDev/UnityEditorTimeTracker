@@ -1,5 +1,5 @@
 //Written by Aexadev on 16/08/2024
-//ver 2.0
+//ver 2.5
 using UnityEditor;
 using UnityEngine;
 using System;
@@ -82,7 +82,7 @@ public class ProjectTimeTracker
 
         Handles.BeginGUI();
         TimeSpan timeSpan = TimeSpan.FromSeconds(totalTime);
-        string timeText = $"Time Spent: {timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+        string timeText = $"Time Spent: {timeSpan.TotalHours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
 
         GUIStyle style = new GUIStyle();
         style.normal.textColor = Color.white;
@@ -308,7 +308,7 @@ public class TimeTrackerOptionsWindow : EditorWindow
 
         GUILayout.FlexibleSpace();
 
-        GUILayout.Label("© 2024 Aexadev ver 2.0", EditorStyles.centeredGreyMiniLabel);
+        GUILayout.Label("© 2024 Aexadev ver 2.5", EditorStyles.centeredGreyMiniLabel);
     }
 }
 
