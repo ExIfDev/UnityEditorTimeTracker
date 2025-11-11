@@ -82,7 +82,8 @@ public class ProjectTimeTracker
 
         Handles.BeginGUI();
         TimeSpan timeSpan = TimeSpan.FromSeconds(totalTime);
-        string timeText = $"Time Spent: {timeSpan.TotalHours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
+        int hours = (int)timeSpan.Hours;
+        string timeText = $"Time Spent: {hours}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}";
 
         GUIStyle style = new GUIStyle();
         style.normal.textColor = Color.white;
