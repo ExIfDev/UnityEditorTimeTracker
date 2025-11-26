@@ -12,7 +12,7 @@
 
 ## How to use
 
--Import the plugin to your Unity project, it's recommended to create a folder dedicated to editor scripts like Assets/Editor/AxTimeTracker.cs
--Done!
+- Import the plugin to your Unity project, it's recommended to create a folder dedicated to editor scripts like 'Assets/Editor/AxTimeTracker.cs'
+- Done!
 
 
